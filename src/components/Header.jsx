@@ -3,11 +3,12 @@ import React from 'react';
 
 const Header = () => {
 	return (
-		<Box
-			display='flex-column'
-			justifyContent='center'
-			alignItems='center'
-			mt={5}
+               <Box
+                       display='flex'
+                       flexDirection='column'
+                       justifyContent='center'
+                       alignItems='center'
+                       mt={5}
 		>
 			<h1 className='mb-6 text-3xl text-center'>Mortgage Calculator</h1>
 			<p className='my-3 text-xl text-center'>

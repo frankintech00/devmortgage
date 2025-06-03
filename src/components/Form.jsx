@@ -8,7 +8,7 @@ import Grid from '@mui/material/Grid';
 import InputAdornment from '@mui/material/InputAdornment';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Form = () => {
 	const [homeValue, setHomeValue] = useState('');
@@ -16,13 +16,19 @@ const Form = () => {
 	const [loanAmount, setLoanAmount] = useState('');
 	const [interestRate, setInterestRate] = useState('');
 	const [loanDuration, setLoanDuration] = useState('');
-	const [monthlyPayment, setMonthlyPayment] = useState(0);
-	const [isHomeValueValid, setIsHomeValueValid] = useState(true);
+       const [monthlyPayment, setMonthlyPayment] = useState(0);
+       const [isHomeValueValid, setIsHomeValueValid] = useState(true);
 
-	function calculateLoanAmount() {
-		setLoanAmount(homeValue - deposit);
-		return loanAmount;
-	}
+       useEffect(() => {
+               const hv = parseFloat(homeValue);
+               const dp = parseFloat(deposit);
+               if (!isNaN(hv) && !isNaN(dp)) {
+                       setLoanAmount(hv - dp);
+               } else {
+                       setLoanAmount('');
+               }
+       }, [homeValue, deposit]);
+
 
 	const handleHomeValueChange = (event) => {
 		setHomeValue(event.target.value);
@@ -78,9 +84,8 @@ const Form = () => {
 						type='number'
 						label='House Value *'
 						startAdornment={<InputAdornment position='start'>£</InputAdornment>}
-						onChange={handleHomeValueChange}
-						onBlur={calculateLoanAmount}
-						error={!isHomeValueValid}
+                                               onChange={handleHomeValueChange}
+                                               error={!isHomeValueValid}
 					/>
 					{!isHomeValueValid && (
 						<FormHelperText error>This field is required.</FormHelperText>
@@ -96,8 +101,7 @@ const Form = () => {
 						type='number'
 						label='Deposit'
 						startAdornment={<InputAdornment position='start'>£</InputAdornment>}
-						onInput={(e) => setDeposit(e.target.value)}
-						onKeyUp={calculateLoanAmount}
+                                               onChange={(e) => setDeposit(e.target.value)}
 					/>
 					<FormHelperText>The amount of deposit you have</FormHelperText>
 				</FormControl>
